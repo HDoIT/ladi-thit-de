@@ -768,6 +768,170 @@
             }
         }
     </style>
+    <style>
+        /* Purchase Notifications Popup */
+        .purchase-notifications {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .purchase-notification {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border: 2px solid #e53e3e;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 8px 25px rgba(229, 62, 62, 0.3);
+            animation: slideInRight 0.5s ease-out;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .purchase-notification::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #e53e3e, #f56565);
+        }
+        
+        .purchase-notification:hover {
+            transform: translateX(-5px);
+        }
+        
+        .purchase-notification.fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+        
+        .notification-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .notification-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e53e3e, #f56565);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .notification-badge {
+            background: #e53e3e;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .notification-content {
+            margin-bottom: 8px;
+        }
+        
+        .customer-name {
+            font-weight: 700;
+            color: #2d3748;
+            font-size: 14px;
+        }
+        
+        .purchase-info {
+            color: #718096;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .purchase-set {
+            color: #e53e3e;
+            font-weight: 600;
+        }
+        
+        .notification-time {
+            color: #a0aec0;
+            font-size: 11px;
+            text-align: right;
+        }
+        
+        /* Animation */
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+        
+        /* Pulse effect for new notifications */
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 8px 25px rgba(229, 62, 62, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 30px rgba(229, 62, 62, 0.6);
+            }
+        }
+        
+        .purchase-notification.new {
+            animation: slideInRight 0.5s ease-out, pulseGlow 2s ease-in-out 3;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .purchase-notifications {
+                top: 80px;
+                right: 10px;
+                max-width: 280px;
+            }
+            
+            .purchase-notification {
+                padding: 12px;
+            }
+            
+            .notification-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .purchase-notifications {
+                top: 70px;
+                right: 5px;
+                max-width: 250px;
+            }
+        }
+        </style>
 </head>
 
 <body>
@@ -1762,7 +1926,9 @@
             <span class="fa fa-arrow-up"></span>
         </button>
     </div>
-
+    <div id="purchase-notifications" class="purchase-notifications">
+        <!-- Các thông báo sẽ được thêm vào đây bằng JavaScript -->
+    </div>
     <!-- jequery plugins -->
     <script src="assets/js/jquery.js"></script>
     <script src="assets/js/popper.min.js"></script>
@@ -1863,6 +2029,246 @@
             });
         });
     </script>
+    <script>
+        // Dữ liệu mẫu khách hàng
+        const sampleCustomers = [
+            {
+                name: "Nguyễn Văn A",
+                location: "Hai Bà Trưng",
+                set: "Set 9 Món",
+                time: "2 phút trước",
+                avatar: "NVA"
+            },
+            {
+                name: "Trần Thị B",
+                location: "Đống Đa",
+                set: "Set 6 Món",
+                time: "5 phút trước",
+                avatar: "TTB"
+            },
+            {
+                name: "Lê Văn C",
+                location: "Cầu Giấy",
+                set: "Set 9 Món",
+                time: "8 phút trước",
+                avatar: "LVC"
+            },
+            {
+                name: "Phạm Thị D",
+                location: "Hoàn Kiếm",
+                set: "Set 6 Món",
+                time: "12 phút trước",
+                avatar: "PTD"
+            },
+            {
+                name: "Hoàng Văn E",
+                location: "Thanh Xuân",
+                set: "Set 9 Món",
+                time: "15 phút trước",
+                avatar: "HVE"
+            }
+        ];
+        
+        // Dữ liệu set món
+        const setData = {
+            "Set 6 Món": {
+                price: "900.000đ",
+                persons: "4-6 người",
+                color: "#f56565"
+            },
+            "Set 9 Món": {
+                price: "1.440.000đ",
+                persons: "8-10 người",
+                color: "#e53e3e"
+            }
+        };
+        
+        class PurchaseNotifications {
+            constructor() {
+                this.notificationsContainer = document.getElementById('purchase-notifications');
+                this.activeNotifications = new Set();
+                this.init();
+            }
+        
+            init() {
+                // Hiển thị thông báo mẫu khi trang load
+                setTimeout(() => {
+                    this.showRandomNotification();
+                }, 3000);
+        
+                // Tạo thông báo mới mỗi 20-40 giây
+                setInterval(() => {
+                    if (Math.random() > 0.3) { // 70% chance để hiển thị thông báo
+                        this.showRandomNotification();
+                    }
+                }, 20000 + Math.random() * 20000);
+        
+                // Giới hạn số lượng thông báo hiển thị cùng lúc
+                this.cleanupInterval = setInterval(() => {
+                    this.cleanupOldNotifications();
+                }, 5000);
+            }
+        
+            showRandomNotification() {
+                const customer = this.getRandomCustomer();
+                this.createNotification(customer);
+            }
+        
+            getRandomCustomer() {
+                const randomIndex = Math.floor(Math.random() * sampleCustomers.length);
+                return {...sampleCustomers[randomIndex]};
+            }
+        
+            createNotification(customer) {
+                const notificationId = Date.now().toString();
+                const setInfo = setData[customer.set];
+                
+                const notificationHTML = `
+                    <div class="purchase-notification new" id="notification-${notificationId}" data-timestamp="${Date.now()}">
+                        <div class="notification-header">
+                            <div class="notification-avatar">${customer.avatar}</div>
+                            <div class="notification-badge">Đã đặt hàng</div>
+                        </div>
+                        <div class="notification-content">
+                            <div class="customer-name">${customer.name}</div>
+                            <div class="purchase-info">
+                                Vừa đặt <span class="purchase-set">${customer.set}</span> 
+                                <br>${setInfo.price} • ${setInfo.persons}
+                                <br><small>Từ ${customer.location}</small>
+                            </div>
+                        </div>
+                        <div class="notification-time">${customer.time}</div>
+                    </div>
+                `;
+        
+                // Thêm thông báo vào container
+                this.notificationsContainer.insertAdjacentHTML('afterbegin', notificationHTML);
+                this.activeNotifications.add(notificationId);
+        
+                // Tự động ẩn sau 8 giây
+                setTimeout(() => {
+                    this.removeNotification(notificationId);
+                }, 8000);
+        
+                // Xóa class 'new' sau khi hoàn thành animation
+                setTimeout(() => {
+                    const notificationElement = document.getElementById(`notification-${notificationId}`);
+                    if (notificationElement) {
+                        notificationElement.classList.remove('new');
+                    }
+                }, 2000);
+            }
+        
+            removeNotification(notificationId) {
+                const notificationElement = document.getElementById(`notification-${notificationId}`);
+                if (notificationElement) {
+                    notificationElement.classList.add('fade-out');
+                    setTimeout(() => {
+                        if (notificationElement.parentNode) {
+                            notificationElement.parentNode.removeChild(notificationElement);
+                        }
+                        this.activeNotifications.delete(notificationId);
+                    }, 500);
+                }
+            }
+        
+            cleanupOldNotifications() {
+                const now = Date.now();
+                const maxDisplayTime = 15000; // 15 giây
+        
+                this.activeNotifications.forEach(notificationId => {
+                    const notificationElement = document.getElementById(`notification-${notificationId}`);
+                    if (notificationElement) {
+                        const timestamp = parseInt(notificationElement.getAttribute('data-timestamp'));
+                        if (now - timestamp > maxDisplayTime) {
+                            this.removeNotification(notificationId);
+                        }
+                    }
+                });
+            }
+        
+            // Phương thức để trigger thông báo từ bên ngoài (khi có đơn hàng thật)
+            triggerRealPurchase(customerData) {
+                const customer = {
+                    name: customerData.name || "Khách hàng",
+                    location: customerData.location || "Hà Nội",
+                    set: customerData.set || "Set 9 Món",
+                    time: "Vừa xong",
+                    avatar: this.getInitials(customerData.name)
+                };
+                this.createNotification(customer);
+            }
+        
+            getInitials(name) {
+                return name.split(' ').map(word => word[0]).join('').toUpperCase().substring(0, 3);
+            }
+        }
+        
+        // Khởi tạo hệ thống thông báo khi trang load
+        document.addEventListener('DOMContentLoaded', function() {
+            window.purchaseNotifications = new PurchaseNotifications();
+            
+            // Demo: Thêm sự kiện click để test thông báo
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-btn') || e.target.closest('.submit-btn')) {
+                    // Khi có đơn hàng thật, gọi:
+                    // window.purchaseNotifications.triggerRealPurchase({
+                    //     name: "Tên Khách Hàng",
+                    //     location: "Quận/Huyện",
+                    //     set: "Set 9 Món"
+                    // });
+                }
+            });
+        });
+        
+        // Integration với form đặt hàng
+        function setupPurchaseTracking() {
+            const orderForm = document.getElementById('orderForm');
+            if (orderForm) {
+                orderForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Lấy thông tin từ form
+                    const formData = new FormData(orderForm);
+                    const customerName = document.getElementById('customerName').value;
+                    const customerAddress = document.getElementById('customerAddress').value;
+                    const selectedSets = Array.from(document.querySelectorAll('input[name="orderSet"]:checked'))
+                        .map(checkbox => {
+                            return checkbox.value === 'set6' ? 'Set 6 Món' : 'Set 9 Món';
+                        }).join(' + ');
+                    
+                    // Hiển thị thông báo đặt hàng
+                    if (window.purchaseNotifications) {
+                        window.purchaseNotifications.triggerRealPurchase({
+                            name: customerName.split(' ')[0] + '...', // Chỉ hiển thị tên đầu
+                            location: this.extractDistrict(customerAddress),
+                            set: selectedSets || 'Set 9 Món'
+                        });
+                    }
+                    
+                    // Tiếp tục xử lý form submit...
+                    setTimeout(() => {
+                        alert('Đặt hàng thành công! Chúng tôi sẽ liên hệ với bạn trong 5 phút.');
+                        orderForm.reset();
+                    }, 1000);
+                });
+            }
+        }
+        
+        // Hàm trích xuất quận/huyện từ địa chỉ
+        function extractDistrict(address) {
+            const districts = ['Hai Bà Trưng', 'Đống Đa', 'Ba Đình', 'Hoàn Kiếm', 'Cầu Giấy', 'Thanh Xuân', 'Hoàng Mai', 'Long Biên'];
+            for (let district of districts) {
+                if (address.toLowerCase().includes(district.toLowerCase())) {
+                    return district;
+                }
+            }
+            return 'Hà Nội';
+        }
+        
+        // Khởi tạo tracking khi trang load
+        document.addEventListener('DOMContentLoaded', setupPurchaseTracking);
+        </script>
 </body>
 
 </html>
