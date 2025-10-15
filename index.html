@@ -1426,6 +1426,143 @@
                 margin: 0 10px;
             }
         }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            max-width: 400px;
+            z-index: 10000;
+            transform: translateX(150%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-left: 4px solid #22c55e;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            border-left-color: #ef4444;
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .notification-icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #dcfce7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification.error .notification-icon {
+            background: #fee2e2;
+        }
+
+        .notification-icon i {
+            font-size: 20px;
+            color: #22c55e;
+        }
+
+        .notification.error .notification-icon i {
+            color: #ef4444;
+        }
+
+        .notification-text h4 {
+            margin: 0 0 5px 0;
+            color: #1f2937;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .notification-text p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .notification-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        /* Loading animation cho submit button */
+        .submit-btn {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn.loading {
+            pointer-events: none;
+        }
+
+        .submit-btn.loading .btn-text {
+            opacity: 0;
+        }
+
+        .submit-btn.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+                transform: translateY(-150%);
+            }
+
+            .notification.show {
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -2572,6 +2709,37 @@
     <div id="purchase-notifications" class="purchase-notifications">
         <!-- Các thông báo sẽ được thêm vào đây bằng JavaScript -->
     </div>
+
+    <!-- Thêm vào trước thẻ </body> -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="notification-text">
+                <h4>Đặt hàng thành công! 🎉</h4>
+                <p>Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.</p>
+            </div>
+            <button class="notification-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="errorNotification" class="notification error">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="notification-text">
+                <h4>Có lỗi xảy ra! ❌</h4>
+                <p>Vui lòng thử lại hoặc gọi trực tiếp: <strong>0981 602 125</strong></p>
+            </div>
+            <button class="notification-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
     <!-- jequery plugins -->
     <script src="assets/js/jquery.js"></script>
     <script src="assets/js/popper.min.js"></script>
@@ -2587,6 +2755,182 @@
     <!-- main-js -->
     <script src="assets/js/script.js"></script>
     <script>
+        // Hàm hiển thị notification
+        function showNotification(type = 'success', message = '') {
+            const notification = document.getElementById('notification');
+            const errorNotification = document.getElementById('errorNotification');
+
+            // Ẩn tất cả notification trước
+            hideAllNotifications();
+
+            if (type === 'success') {
+                notification.classList.add('show');
+            } else {
+                if (message) {
+                    errorNotification.querySelector('.notification-text p').textContent = message;
+                }
+                errorNotification.classList.add('show');
+            }
+
+            // Tự động ẩn sau 5 giây
+            setTimeout(() => {
+                hideAllNotifications();
+            }, 5000);
+        }
+
+        function hideAllNotifications() {
+            const notifications = document.querySelectorAll('.notification');
+            notifications.forEach(notification => {
+                notification.classList.remove('show');
+            });
+        }
+
+        // Hàm lấy thời gian Việt Nam
+        function getVietnamTime() {
+            const now = new Date();
+            const vietnamTime = new Date(now.getTime() + (7 * 60 * 60 * 1000));
+
+            return vietnamTime.toLocaleString('vi-VN', {
+                timeZone: 'Asia/Ho_Chi_Minh',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+        }
+
+        // Hàm gửi dữ liệu đến Google Apps Script
+        async function submitToGoogleSheet(formData) {
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyhF74YH_e_adOy1uR1OjaUiP3kRBNPb94Gn3P6U-mfQJvC4Tm7nvCIsNNDcCVvOcZf/exec'; // Thay bằng URL deployment của bạn
+
+            try {
+                const response = await fetch(scriptURL, {
+                    mode: "no-cors",
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.text();
+                return result;
+            } catch (error) {
+                console.error('Error:', error);
+                throw error;
+            }
+        }
+
+        // Xử lý khi form submit
+        document.getElementById('orderForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const submitBtn = this.querySelector('.submit-btn');
+            const btnText = submitBtn.querySelector('.btn-text');
+
+            // Validate form
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            const address = document.getElementById('customerAddress').value.trim();
+
+            if (!name) {
+                showNotification('error', 'Vui lòng nhập họ và tên!');
+                document.getElementById('customerName').focus();
+                return;
+            }
+
+            if (!phone) {
+                showNotification('error', 'Vui lòng nhập số điện thoại!');
+                document.getElementById('customerPhone').focus();
+                return;
+            }
+
+            if (!address) {
+                showNotification('error', 'Vui lòng nhập địa chỉ nhận hàng!');
+                document.getElementById('customerAddress').focus();
+                return;
+            }
+
+            // Kiểm tra định dạng số điện thoại
+            const phoneRegex = /^(0[3|5|7|8|9])+([0-9]{8})$/;
+            const cleanPhone = phone.replace(/\s/g, '');
+            if (!phoneRegex.test(cleanPhone)) {
+                showNotification('error', 'Số điện thoại không hợp lệ!');
+                document.getElementById('customerPhone').focus();
+                return;
+            }
+
+            // Kiểm tra ít nhất một món được chọn
+            const selectedItems = [];
+            if (document.getElementById('set6').checked) selectedItems.push('Set 6 Món - 900.000 VNĐ');
+            if (document.getElementById('set9').checked) selectedItems.push('Set 9 Món - 1.440.000 VNĐ');
+            if (document.getElementById('chaoDe').checked) selectedItems.push('Cháo Dê - 150.000 VNĐ');
+
+            if (selectedItems.length === 0) {
+                showNotification('error', 'Vui lòng chọn ít nhất một set hoặc món!');
+                return;
+            }
+
+            // Hiển thị loading
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            try {
+                // Tạo FormData với thời gian Việt Nam
+                const formData = new FormData();
+                formData.append('timestamp', getVietnamTime());
+                formData.append('name', name);
+                formData.append('phone', cleanPhone);
+                formData.append('address', address);
+                formData.append('items', selectedItems.join(', '));
+                formData.append('note', document.getElementById('customerNote').value.trim());
+                formData.append('source', 'Website Phở Dê Thố');
+
+                // Gửi dữ liệu
+                const result = await submitToGoogleSheet(formData);
+
+                // Hiển thị notification thành công
+                showNotification('success');
+                // Reset form
+                this.reset();
+
+            } catch (error) {
+                console.error('Error:', error);
+                // showNotification('error', 'Có lỗi xảy ra khi gửi đơn hàng. Vui lòng thử lại hoặc gọi trực tiếp: 0981 602 125');
+            } finally {
+                // Khôi phục button
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Format số điện thoại khi nhập
+        document.getElementById('customerPhone').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value.length <= 10) {
+                    if (value.length >= 4) {
+                        value = value.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3');
+                    } else if (value.length >= 3) {
+                        value = value.replace(/(\d{3})(\d{3})/, '$1 $2');
+                    }
+                } else {
+                    value = value.substring(0, 10);
+                }
+            }
+            e.target.value = value;
+        });
+
+        // Setup notification events
+        document.addEventListener('DOMContentLoaded', function () {
+            // Close buttons
+            document.querySelectorAll('.notification-close').forEach(button => {
+                button.addEventListener('click', function () {
+                    const notification = this.closest('.notification');
+                    notification.classList.remove('show');
+                });
+            });
+        });
         // Countdown Timer
         function updateCountdown() {
             const now = new Date();
@@ -2635,7 +2979,7 @@
 
                 // Validate set selection
                 if (!selectedSet) {
-                    alert('Vui lòng chọn ít nhất một set!');
+                    // alert('Vui lòng chọn ít nhất một set!');
                     return;
                 }
 
