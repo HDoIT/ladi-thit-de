@@ -2927,56 +2927,23 @@
         document.addEventListener('DOMContentLoaded', setupPurchaseTracking);
         // Xử lý video trên mobile
         document.addEventListener('DOMContentLoaded', function () {
-            // Chỉ chạy trên mobile
             if (window.innerWidth <= 767) {
-                const videoLink = document.querySelector('.video-btn');
                 const videoInner = document.querySelector('.video-inner');
+                const videoUrl = '/assets/images/video/Facebook.mp4';
+                const posterUrl = 'assets/images/video/Screenshot 2025-10-14 232057.jpg';
 
-                if (videoLink && videoInner) {
-                    // Lấy URL video từ thẻ a
-                    const videoUrl = videoLink.getAttribute('href');
-
-                    // Tạo video element với đầy đủ attributes
-                    const video = document.createElement('video');
-                    video.src = videoUrl;
-                    video.controls = true;
-                    video.controlsList = 'nodownload';
-                    video.style.width = '100%';
-                    video.style.height = 'auto';
-                    video.style.borderRadius = '10px';
-                    video.style.display = 'block';
-
-                    // Thêm poster
-                    const currentBg = videoInner.style.backgroundImage;
-                    const posterUrl = currentBg.replace('url("', '').replace('")', '');
-                    video.poster = posterUrl;
-
-                    // Thêm multiple sources để chắc chắn
-                    video.innerHTML = `
+                videoInner.innerHTML = `
+            <video 
+                controls 
+                playsinline
+                webkit-playsinline
+                style="width:100%; height:auto; border-radius:10px;"
+                poster="${posterUrl}"
+            >
                 <source src="${videoUrl}" type="video/mp4">
-                <source src="${videoUrl.replace('.mp4', '.webm')}" type="video/webm">
                 Trình duyệt của bạn không hỗ trợ video.
-            `;
-
-                    // Thay thế nội dung
-                    videoInner.style.backgroundImage = 'none';
-                    videoInner.innerHTML = '';
-                    videoInner.appendChild(video);
-
-                    // Xử lý lỗi video
-                    video.addEventListener('error', function (e) {
-                        console.log('Video error:', e);
-                        // Hiển thị fallback
-                        videoInner.innerHTML = `
-                    <div style="text-align: center; padding: 20px; color: #666;">
-                        <p>Video không thể phát</p>
-                        <a href="${videoUrl}" download style="color: #ff6b35; text-decoration: underline;">
-                            Tải video về xem
-                        </a>
-                    </div>
-                `;
-                    });
-                }
+            </video>
+        `;
             }
         });
     </script>
