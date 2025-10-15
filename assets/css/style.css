@@ -2360,7 +2360,7 @@
 
  .shop-block-one .inner-box .lower-content .rating li:last-child {
    margin-right: 0px;
-   color: #d5d5d5;
+   /* color: #d5d5d5; */
  }
 
  .shop-block-one .inner-box .lower-content .price {
@@ -5585,4 +5585,11 @@
 
  .mt-0 {
    margin-top: 0px !important;
+ }
+
+ @media (max-width:480px) {
+  .fancybox-slide>*{
+    margin: 44px -100px !important;
+    width: 400px !important;
+  }
  }
