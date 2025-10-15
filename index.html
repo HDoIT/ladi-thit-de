@@ -2925,6 +2925,33 @@
 
         // Khởi tạo tracking khi trang load
         document.addEventListener('DOMContentLoaded', setupPurchaseTracking);
+        document.addEventListener('DOMContentLoaded', function () {
+            // Chỉ chạy trên mobile
+            if (window.innerWidth <= 767) {
+                const videoLink = document.querySelector('.video-btn');
+                const videoInner = document.querySelector('.video-inner');
+
+                if (videoLink && videoInner) {
+                    // Lấy URL video từ thẻ a
+                    const videoUrl = videoLink.getAttribute('href');
+
+                    // Tạo video element
+                    const video = document.createElement('video');
+                    video.src = videoUrl;
+                    video.controls = true;
+                    video.style.width = '100%';
+                    video.style.height = 'auto';
+                    video.style.borderRadius = '10px';
+
+                    // Thay thế thẻ a bằng video
+                    videoInner.innerHTML = '';
+                    videoInner.appendChild(video);
+
+                    // Thêm poster nếu cần
+                    video.poster = 'assets/images/video/Screenshot 2025-10-14 232057.jpg';
+                }
+            }
+        });
     </script>
 </body>
 
