@@ -2929,7 +2929,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             if (window.innerWidth <= 767) {
                 const videoInner = document.querySelector('.video-inner');
-                const videoUrl = '/assets/images/video/Facebook.mp4';
+                const videoUrl = '/assets/images/video/Facebook.webm';
                 const posterUrl = 'assets/images/video/Screenshot 2025-10-14 232057.jpg';
 
                 videoInner.innerHTML = `
@@ -2940,7 +2940,7 @@
                 style="width:100%; height:auto; border-radius:10px;"
                 poster="${posterUrl}"
             >
-                <source src="${videoUrl}" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2">
+                <source src="${videoUrl}" type="video/webm">
                 Trình duyệt của bạn không hỗ trợ video.
             </video>
         `;
