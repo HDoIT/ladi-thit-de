@@ -582,25 +582,248 @@
             }
         }
 
-        .hotline-float {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: #25d366;
-            color: white;
-            padding: 15px;
-            border-radius: 50px;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .description {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
-        .hotline-float a {
+        .demo-button {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 117, 252, 0.5);
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .instructions h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .instructions ul {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        /* Floating buttons styles */
+        .floating-buttons {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .button-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-button {
+            width: 70px;
+            height: 70px;
+            border-radius: 15%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .contact-button:hover {
+            transform: scale(1.05);
+        }
+
+        .contact-button.phone {
+            background: linear-gradient(135deg, #25d366, #128C7E);
+        }
+
+        .contact-button.zalo {
+            background: white;
+        }
+
+        .contact-button i {
+            font-size: 28px;
+            color: white;
+        }
+
+        /* Hiệu ứng gợn sóng */
+        .ripple-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .ripple-1 {
+            background: rgba(255, 255, 255, 0.5);
+            animation: ripple-animation 3s linear infinite;
+        }
+
+        .ripple-2 {
+            background: rgba(255, 255, 255, 0.3);
+            animation: ripple-animation 3s linear infinite 1s;
+        }
+
+        .ripple-3 {
+            background: rgba(255, 255, 255, 0.2);
+            animation: ripple-animation 3s linear infinite 2s;
+        }
+
+        @keyframes ripple-animation {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* Thông tin liên hệ */
+        .contact-info {
+            position: absolute;
+            left: 85px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5;
+            min-width: 180px;
+            text-align: center;
+            transform: translateX(-10px);
+        }
+
+        .button-wrapper:hover .contact-info,
+        .button-wrapper.active .contact-info {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .phone-number {
+            display: block;
             text-decoration: none;
-            font-weight: bold;
+            color: #333;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phone-number:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: left 0.5s;
+        }
+
+        .phone-number:hover:before {
+            left: 100%;
+        }
+
+        .phone-number:hover {
+            background: #f0f8ff;
+            color: #0068FF;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .phone-number.primary {
+            background: linear-gradient(135deg, #25d366, #128C7E);
+            color: white;
+        }
+
+        .phone-number.primary:hover {
+            background: linear-gradient(135deg, #20bd5c, #0f7a61);
+            color: white;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ddd, transparent);
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .floating-buttons {
+                bottom: 20px;
+                left: 20px;
+            }
+
+            .contact-button {
+                width: 60px;
+                height: 60px;
+            }
+
+            .contact-button i {
+                font-size: 24px;
+            }
+
+            .contact-info {
+                left: 75px;
+                min-width: 175px;
+            }
         }
     </style>
     <style>
@@ -2693,12 +2916,41 @@
         </footer>
         <!-- main-footer end -->
 
-        <!-- Floating Hotline -->
-        <div class="hotline-float">
-            <a href="tel:0981602125">
-                <i class="fas fa-phone-alt"></i>
-                0981 602 125
-            </a>
+        <div class="floating-buttons">
+            <!-- Nút điện thoại -->
+            <div class="button-wrapper" id="phoneButton">
+                <div class="contact-button phone">
+                    <i class="fas fa-phone-alt"></i>
+                    <div class="ripple-container">
+                        <div class="ripple ripple-1"></div>
+                        <div class="ripple ripple-2"></div>
+                        <div class="ripple ripple-3"></div>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <a href="tel:0961609918" class="phone-number primary">096 160 9918</a>
+                    <div class="divider"></div>
+                    <a href="tel:0981602125" class="phone-number">098 160 2125</a>
+                </div>
+            </div>
+
+            <!-- Nút Zalo -->
+            <div class="button-wrapper" id="zaloButton">
+                <div class="contact-button zalo">
+                    <img src="/assets/images/7044033_zalo_icon.png"
+                        alt="Zalo" class="zalo-icon">
+                    <div class="ripple-container">
+                        <div class="ripple ripple-1"></div>
+                        <div class="ripple ripple-2"></div>
+                        <div class="ripple ripple-3"></div>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <a href="https://zalo.me/0961609918" class="phone-number primary">096 160 9918</a>
+                    <div class="divider"></div>
+                    <a href="https://zalo.me/0981602125" class="phone-number">098 160 2125</a>
+                </div>
+            </div>
         </div>
 
         <!--Scroll to top-->
@@ -2707,10 +2959,8 @@
         </button>
     </div>
     <div id="purchase-notifications" class="purchase-notifications">
-        <!-- Các thông báo sẽ được thêm vào đây bằng JavaScript -->
     </div>
 
-    <!-- Thêm vào trước thẻ </body> -->
     <div id="notification" class="notification">
         <div class="notification-content">
             <div class="notification-icon">
@@ -2752,7 +3002,6 @@
     <script src="assets/js/scrollbar.js"></script>
     <script src="assets/js/nav-tool.js"></script>
 
-    <!-- main-js -->
     <script src="assets/js/script.js"></script>
     <script>
         // Hàm hiển thị notification
@@ -3241,7 +3490,7 @@
                     // Hiển thị thông báo đặt hàng
                     if (window.purchaseNotifications) {
                         window.purchaseNotifications.triggerRealPurchase({
-                            name: customerName.split(' ')[0] + '...', // Chỉ hiển thị tên đầu
+                            name: customerName.split(' ')[0] + '...',
                             location: this.extractDistrict(customerAddress),
                             set: selectedSets || 'Set 9 Món'
                         });
@@ -3288,6 +3537,49 @@
                 Trình duyệt của bạn không hỗ trợ video.
             </video>
         `;
+            }
+        });
+    </script>
+    <script>
+        // Thêm icon Zalo giả lập (vì FontAwesome không có icon Zalo)
+        const style = document.createElement('style');
+        style.textContent = `
+            .fa-zalo:before {
+                content: "Z";
+                font-weight: bold;
+                font-family: Arial, sans-serif;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Xử lý sự kiện click cho các nút liên hệ trên mobile
+        const buttonWrappers = document.querySelectorAll('.button-wrapper');
+        buttonWrappers.forEach(wrapper => {
+            wrapper.addEventListener('click', function (e) {
+                // Chỉ kích hoạt trên mobile
+                if (window.innerWidth <= 768) {
+                    // Ngăn chặn sự kiện click lan ra ngoài
+                    if (e.target.tagName === 'A') return;
+
+                    // Toggle trạng thái active
+                    this.classList.toggle('active');
+
+                    // Ẩn các nút khác
+                    buttonWrappers.forEach(otherWrapper => {
+                        if (otherWrapper !== this) {
+                            otherWrapper.classList.remove('active');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Đóng thông tin liên hệ khi click ra ngoài
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.button-wrapper')) {
+                buttonWrappers.forEach(wrapper => {
+                    wrapper.classList.remove('active');
+                });
             }
         });
     </script>
