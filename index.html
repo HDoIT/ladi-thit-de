@@ -1089,9 +1089,11 @@
         }
 
         .checkbox-options {
-            display: flex;
-            /* flex-direction: column; */
-            gap: 12px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            /* 3 item mỗi hàng */
+            gap: 16px;
+            /* khoảng cách giữa các item */
         }
 
         .checkbox-item {
@@ -2048,8 +2050,7 @@
                                         <a href="/assets/pdf/Profile Dê Thảo Dược_compressed.pdf" target="_blank"
                                             class="theme-btn outline" style="top: 10px;">
                                             <i class="fas fa-file-pdf"></i>
-                                             Xem Profile Company<i
-                                            class="fas fa-long-arrow-alt-right"></i>
+                                            Xem Profile Company<i class="fas fa-long-arrow-alt-right"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -2436,6 +2437,78 @@
                             </div>
                         </div>
                     </div>
+                    <div class="portfolio-block-one">
+                        <div class="inner-box">
+                            <figure class="image-box">
+                                <img src="assets/images/resource/portfolio-3.jpg" alt="Cháo Dê">
+                            </figure>
+                            <div class="lower-content">
+                                <div class="inner">
+                                    <span>Món Truyền Thống</span>
+                                    <h4><a href="#about-style-two">Set Lẩu Nguyên Vị</a></h4>
+                                    <div class="link">
+                                        <a href="#about-style-two">
+                                            <i class="flaticon-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-block-one">
+                        <div class="inner-box">
+                            <figure class="image-box">
+                                <img src="assets/images/resource/portfolio-4.jpg" alt="Cháo Dê">
+                            </figure>
+                            <div class="lower-content">
+                                <div class="inner">
+                                    <span>Món Truyền Thống</span>
+                                    <h4><a href="#about-style-two">Set Lẩu Song Vị</a></h4>
+                                    <div class="link">
+                                        <a href="#about-style-two">
+                                            <i class="flaticon-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-block-one">
+                        <div class="inner-box">
+                            <figure class="image-box">
+                                <img src="assets/images/resource/portfolio-3.jpg" alt="Cháo Dê">
+                            </figure>
+                            <div class="lower-content">
+                                <div class="inner">
+                                    <span>Món Truyền Thống</span>
+                                    <h4><a href="#about-style-two">Thịt Dê Hun Khói</a></h4>
+                                    <div class="link">
+                                        <a href="#about-style-two">
+                                            <i class="flaticon-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-block-one">
+                        <div class="inner-box">
+                            <figure class="image-box">
+                                <img src="assets/images/resource/portfolio-5.jpg" alt="Cháo Dê">
+                            </figure>
+                            <div class="lower-content">
+                                <div class="inner">
+                                    <span>Món Truyền Thống</span>
+                                    <h4><a href="#about-style-two">Đùi Dê Hun Khói</a></h4>
+                                    <div class="link">
+                                        <a href="#about-style-two">
+                                            <i class="flaticon-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -2559,6 +2632,33 @@
                                                     </div>
                                                 </label>
                                             </div>
+                                            <div class="checkbox-item">
+                                                <input type="checkbox" id="songVi" name="sv" value="songVi">
+                                                <label for="songVi" class="checkbox-label">
+                                                    <span class="checkmark"></span>
+                                                    <div class="option-content">
+                                                        <strong>Lẩu Dê Song Vị</strong>
+                                                        <span class="price">1.999.000 VNĐ</span>
+                                                        <small> Set 8–10 người no căng bụng. Chọn 2 hương vị đỉnh: Mẻ
+                                                            cơm truyền thống thanh ngọt hoặc Thái Tomyum cay
+                                                            nồng</small>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox-item">
+                                                <input type="checkbox" id="nguyenvi" name="nv" value="nguyenvi">
+                                                <label for="nguyenvi" class="checkbox-label">
+                                                    <span class="checkmark"></span>
+                                                    <div class="option-content">
+                                                        <strong> Set Lẩu Dê Nguyên Vị</strong>
+                                                        <span class="price">1.999.000 VNĐ</span>
+                                                        <small> 🍲 Một nồi – ba hương vị đặc sắc! <br>
+                                                            👉 Tứ Xuyên cay nồng – Tomyum chua cay – Mẻ cơm thanh dịu. <br>
+                                                            🥩 Dù chọn vị nào, chỉ 899K là có ngay nồi Lẩu dê nguyên vị
+                                                            Nhà Chang cho 4–6 người!</small>
+                                                    </div>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -2645,7 +2745,8 @@
                         <div class="testimonial-block-one">
                             <div class="inner-box">
                                 <div class="icon-box"><i class="flaticon-quote"></i></div>
-                                <p>"Dê thảo dược ở đây ngon thật! Thịt chắc, không bở, mùi vị đặc trưng. Tôi đã thử
+                                <p>"Dê thảo dược ở đây ngon thật! Thịt dê tươi mềm, ngọt 
+                                    và có mùi thơm của thảo dược. Tôi đã thử
                                     nhiều quán nhưng thấy ở đây ổn nhất. Ship free 5km là quá tuyệt!"</p>
                                 <div class="author-box">
                                     <figure class="image-box"><img src="assets/images/resource/testimonial-4.png"
